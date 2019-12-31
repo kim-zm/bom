@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">Boot</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+<body>
+	<div id="page-wrapper">
+		<header th:replace="layout/header :: header"></header>
+		<th:block layout:fragment="content"></th:block>
+    	<footer th:replace="layout/footer :: footer"></footer>
+    	<!--
+	    <th:block th:replace="fragments/commonScript"></th:block>
+	    <th:block layout:fragment="pageCustomScript"></th:block>
+	    -->	
+	</div>
+</body>
+</html>

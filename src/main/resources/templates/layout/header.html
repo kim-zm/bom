@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<header th:fragment="header" id="header">
+    <!-- Header -->
+	<h1 id="logo"><a href="/">Boot</a></h1>
+	<nav id="nav">
+		<ul>
+			<li><a th:href="@{/}">Home</a></li>
+			<li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Registration</a></li>
+			<li><a th:href="@{/elements.html}">Elements</a></li>
+			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/}">Admin</a></li>
+			<li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/mypage}">User</a></li>
+			<li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="button primary">Sign Up</a></li>
+			<li sec:authorize="isAuthenticated()">
+				<form th:action="@{/logout}" name="logoutForm" method="post">
+					<a href="javascript:document.logoutForm.submit()" class="button">Sign Out</a>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			    </form>
+			</li>			
+		</ul>
+	</nav>
+</header>
+</html>

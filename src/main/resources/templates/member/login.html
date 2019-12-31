@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+	<title>Login</title>
+</head>
+<div layout:fragment="content" id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Login</h2>
+			<p>login form</p>
+		</header>
+	</div>
+    
+    <section>
+		<form th:action="@{/login}" th:object="${userForm}" method="post">
+			<div class="row gtr-uniform gtr-50">    
+		        <label for="lab-name">ID</label>
+				<div class="col-12 col-12-xsmall">
+					<input type="text" th:field="*{username}" />
+				</div>
+				<label for="lab-password">Password</label>
+				<div class="col-12 col-12-xsmall">
+					<input type="password" th:field="*{password}" value="" />
+				</div>	        
+	        	
+	        	<div th:if="${error}" th:text="${error}"></div>
+	        	<div th:if="${logout}" th:text="${message}"></div>
+        	
+        		<div class="col-12">
+					<ul class="actions">
+						<li><input type="submit" value="Sign In" class="primary" /></li>
+					</ul>
+				</div>
+			</div>
+		</form>
+		<a href="/registration">registration</a>
+	</section>    
+</div>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+	<title>Registration</title>
+</head>
+<div layout:fragment="content" id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Registration</h2>
+			<p>registration form</p>
+		</header>
+	</div>
+	
+	<section>
+		<form th:action="@{/registration}" th:object="${userForm}" method="post">
+			<div class="row gtr-uniform gtr-50">
+				<label for="lab-name">ID</label>
+				<div class="col-12 col-12-xsmall">
+					<input type="text" th:field="*{username}" value="" />
+				  	<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">username Error</p>
+				</div>
+				<label for="lab-email">Email</label>
+				<div class="col-12 col-12-xsmall">
+					<input type="text" th:field="*{email}" value="" />
+				  	<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">email Error</p>
+				</div>
+				<label for="lab-password">Password</label>
+				<div class="col-12 col-12-xsmall">
+					<input type="password" th:field="*{password}" value="" />
+				  	<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">password Error</p>
+				</div>
+				<label for="lab-name">Type</label>
+				<div class="col-4 col-12-medium" th:each="r,iter : ${codeRole}">
+					<input type="radio" 
+				    	th:field="*{roles[0].name}"
+				    	th:id="${r}"
+				    	th:value="${r}"
+				    />
+				    <label th:for="${r}" th:text="${r}"></label>				    
+				</div>
+				<div class="col-12">
+					<p th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" class="error">roles Error</p>
+				</div>
+				<div class="col-12">
+					<ul class="actions">
+						<li><input type="submit" value="Join" class="primary" /></li>						
+						<li><input type="reset" value="Reset" /></li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</section>
+</div>
+</html>
