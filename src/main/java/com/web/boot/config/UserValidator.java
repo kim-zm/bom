@@ -13,6 +13,8 @@ import com.web.boot.repository.UserRepository;
 public class UserValidator implements Validator {
     @Autowired
     private UserRepository userRepository;
+    
+    boolean isAddValid = false;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -22,24 +24,19 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;
-/*
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
-        if (user.getUsername() != null && (user.getUsername().length() < 3 || user.getUsername().length() > 20)) {
-            errors.rejectValue("username", "Size.userForm.username");
-        }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
-        if (user.getEmail() != null && (user.getEmail().length() < 3 || user.getEmail().length() > 50)) {
-            errors.rejectValue("email", "Size.userForm.email");
-        }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-        if (user.getPassword() != null && (user.getPassword().length() < 3 || user.getPassword().length() > 50)) {
-            errors.rejectValue("password", "Size.userForm.password");
-        }
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "roles", "NotEmpty");
-  */      
+        
+        if(isAddValid){
+        	ValidationUtils.rejectIfEmptyOrWhitespace(errors, "roles", "NotEmpty");
+        	isAddValid = false;
+    	}
+        
         if (userRepository.findByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "Duplicate.userForm.username");
         }        
 
+    }
+    
+    public void setAddValid(boolean isAddValid) {
+    	this.isAddValid = isAddValid;
     }
 }

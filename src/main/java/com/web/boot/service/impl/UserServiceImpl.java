@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
 	public void saveUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
-		String role = ROLE_PREFIX+"USER";
+		String role = "";
 		if(user.getRoles() != null) {
 			role = user.getRoles().stream()
 				.filter(Objects::nonNull)

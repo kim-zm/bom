@@ -26,23 +26,19 @@ public class User {
 	@Column(name = "user_id")
     private Long id;
 
-	@NotEmpty
 	@Length(min=2,max=20)
 	private String username;
 	
-	@NotEmpty
 	@Length(min=2,max=50)
 	@Email
 	@Column(length = 50, nullable = false)
     private String email;
 
-	@NotEmpty
 	@Length(min=2,max=100)
     @Column(length = 100, nullable = false)
     private String password;
     
-	@NotEmpty
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -88,4 +84,7 @@ public class User {
 		this.roles = roles;
 	}
 	
+	public boolean getHasRole(String rolename) {
+		return this.roles.stream().filter(o -> o.getName().equals(rolename)).findAny().isPresent();
+	}
 }

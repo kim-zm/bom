@@ -9,7 +9,8 @@
 			<li><a th:href="@{/}">Home</a></li>
 			<li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Registration</a></li>
 			<li><a th:href="@{/elements.html}">Elements</a></li>
-			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/}">Admin</a></li>
+			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}">Admin</a></li>
+			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/account}">Account</a></li>
 			<li sec:authorize="hasRole('ROLE_USER')"><a th:href="@{/mypage}">User</a></li>
 			<li sec:authorize="isAnonymous()"><a th:href="@{/login}" class="button primary">Sign Up</a></li>
 			<li sec:authorize="isAuthenticated()">

@@ -3,17 +3,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
 <head>
-	<title>Registration</title>
+	<title>Account</title>
 </head>
 <div layout:fragment="content" id="main" class="wrapper style1">
 	<div class="container">
 		<header class="major">
-			<h2>Registration</h2>
-			<p>registration form</p>
+			<h2>Account</h2>
+			<p>account form</p>
 		</header>
 	
 		<section>
-			<form th:action="@{/registration}" th:object="${userForm}" method="post">
+			<form th:action="@{/admin/account}" th:object="${userForm}" method="post">
 				<div class="row gtr-uniform gtr-50">
 					<div class="col-6 col-12-xsmall">
 						<label for="lab-name">ID</label>
@@ -29,6 +29,18 @@
 						<label for="lab-email">Email</label>
 						<input type="text" th:field="*{email}" value="" />
 					  	<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">email Error</p>
+					</div>
+					<div class="col-12 col-12-medium">
+						<label for="lab-type">Type</label>
+						<th:block th:each="r,iter : ${codeRole}">
+							<input type="radio" 
+						    	th:field="*{roles[0].name}"
+						    	th:id="${r}"
+						    	th:value="${r}"
+						    />
+						    <label th:for="${r}" th:text="${r}"></label>
+					    </th:block>
+						<p th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" class="error">roles Error</p>
 					</div>
 					
 					<div class="col-12">

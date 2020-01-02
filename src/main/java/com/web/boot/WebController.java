@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.boot.config.UserValidator;
@@ -48,6 +52,18 @@ public class WebController {
     	return role;
 	}
 	
+	@ResponseBody
+	@GetMapping("/create")
+    public User create(Model model) {
+		User user = new User();
+		user.setUsername("admin");
+		user.setPassword("1234");
+		user.setEmail("admin@naver.com");
+		user.setRoles(Arrays.asList(new Role(1, "ADMIN")));
+		userService.saveUser(user);
+		return user;
+    }
+	
 	@RequestMapping(value="/", method=RequestMethod.GET)
     public String root(Model model) {
 		return "redirect:/index";
@@ -60,22 +76,20 @@ public class WebController {
     
     @GetMapping("/registration")
     public String registration(Model model) {
-    	User user = new User();
-    	//Role role = roleService.findByName("ROLE_USER");
-    	//user.setRoles(Arrays.asList(role));
-    	model.addAttribute("userForm", user);
+    	model.addAttribute("userForm", new User());
     	return "member/registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-    	
+    public String registration(HttpServletRequest request, @ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) 
+    {
     	userValidator.validate(userForm, bindingResult);
     	
         if (bindingResult.hasErrors()) {
             return "member/registration";
         }
         
+        userForm.setRoles(Arrays.asList(new Role(2, "USER")));
         userService.saveUser(userForm);
 
         redirectAttributes.addFlashAttribute("userForm", userForm);

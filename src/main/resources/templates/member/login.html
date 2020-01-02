@@ -11,31 +11,32 @@
 			<h2>Login</h2>
 			<p>login form</p>
 		</header>
-	</div>
     
-    <section>
-		<form th:action="@{/login}" th:object="${userForm}" method="post">
-			<div class="row gtr-uniform gtr-50">    
-		        <label for="lab-name">ID</label>
-				<div class="col-12 col-12-xsmall">
-					<input type="text" th:field="*{username}" />
-				</div>
-				<label for="lab-password">Password</label>
-				<div class="col-12 col-12-xsmall">
-					<input type="password" th:field="*{password}" value="" />
-				</div>	        
+	    <section>
+			<form th:action="@{/login}" th:object="${userForm}" method="post">
+				<div class="row gtr-uniform gtr-50">    
+			        <label for="lab-name">ID</label>
+					<div class="col-12 col-12-xsmall">
+						<input type="text" th:field="*{username}" />
+					</div>
+					<label for="lab-password">Password</label>
+					<div class="col-12 col-12-xsmall">
+						<input type="password" th:field="*{password}" value="" />
+					</div>	        
+		        	
+		        	<div th:if="${error}" th:text="${error}"></div>
+		        	<div th:if="${logout}" th:text="${message}"></div>
 	        	
-	        	<div th:if="${error}" th:text="${error}"></div>
-	        	<div th:if="${logout}" th:text="${message}"></div>
-        	
-        		<div class="col-12">
-					<ul class="actions">
-						<li><input type="submit" value="Sign In" class="primary" /></li>
-					</ul>
+	        		<div class="col-12">
+						<ul class="actions">
+							<li><input type="submit" value="Sign In" class="primary" /></li>
+						</ul>
+					</div>
 				</div>
-			</div>
-		</form>
-		<a href="/registration">registration</a>
-	</section>    
+			</form>
+			<a href="/registration">registration</a>
+			<a href="/create">create(admin)</a>
+		</section>
+	</div>
 </div>
 </html>

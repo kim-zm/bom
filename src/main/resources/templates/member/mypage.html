@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
 <head>
@@ -11,45 +12,47 @@
 			<h2>Mypage</h2>
 			<p>mypage form</p>
 		</header>
-	</div>
 	
-	<section>
-		<form th:action="@{/mypage}" th:object="${userForm}" method="post">
-			<div class="row gtr-uniform gtr-50">
-				<label for="lab-name">ID</label>
-				<div class="col-12 col-12-xsmall">
-					<p th:field="*{username}" />
+		<section>
+			<form th:action="@{/mypage}" th:object="${userForm}" method="post">
+				<div class="row gtr-uniform gtr-50">
+					<div class="col-6 col-12-xsmall">
+						<label for="lab-name">ID</label>
+						<p th:text="*{username}" />
+						<input type="hidden" th:field="*{username}" value="" />
+					</div>
+					<div class="col-6 col-12-xsmall">
+						<label for="lab-password">Password</label>
+						<input type="password" th:field="*{password}" value="" />
+					  	<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">password Error</p>
+					</div>
+					<div class="col-12 col-12-xsmall">				
+						<label for="lab-email">Email</label>
+						<input type="text" th:field="*{email}" value="" />
+					  	<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">email Error</p>
+					</div>
+					
+					<div sec:authorize="hasRole('ROLE_ADMIN')" class="col-12 col-12-medium">
+						<label for="lab-type">Type</label>
+						<th:block th:each="r,iter : ${codeRole}">
+							<input type="radio" 
+						    	th:field="*{roles[0].name}"
+						    	th:id="${r}"
+						    	th:value="${r}"
+						    />
+						    <label th:for="${r}" th:text="${r}"></label>
+					    </th:block>
+						<p th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" class="error">roles Error</p>
+					</div>
+					<div class="col-12">
+						<ul class="actions">
+							<li><input type="submit" value="Update" class="primary" /></li>						
+							<li><input type="reset" value="Reset" /></li>
+						</ul>
+					</div>
 				</div>
-				<label for="lab-email">Email</label>
-				<div class="col-12 col-12-xsmall">
-					<input type="text" th:field="*{email}" value="" />
-				  	<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">email Error</p>
-				</div>
-				<label for="lab-password">Password</label>
-				<div class="col-12 col-12-xsmall">
-					<input type="password" th:field="*{password}" value="" />
-				  	<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">password Error</p>
-				</div>
-				<label for="lab-name">Type</label>
-				<div class="col-4 col-12-medium" th:each="r,iter : ${codeRole}">
-					<input type="radio" 
-				    	th:field="*{roles[0].name}"
-				    	th:id="${r}"
-				    	th:value="${r}"
-				    />
-				    <label th:for="${r}" th:text="${r}"></label>				    
-				</div>
-				<div class="col-12">
-					<p th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}" class="error">roles Error</p>
-				</div>
-				<div class="col-12">
-					<ul class="actions">
-						<li><input type="submit" value="Update" class="primary" /></li>						
-						<li><input type="reset" value="Reset" /></li>
-					</ul>
-				</div>
-			</div>
-		</form>
-	</section>
+			</form>
+		</section>
+	</div>
 </div>
 </html>
