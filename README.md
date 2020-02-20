@@ -1,5 +1,2 @@
 # bom
-bom
-
-commit
-commit
+Spring boot
