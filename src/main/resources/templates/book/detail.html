@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+	<title>Detail</title>
+</head>
+<div layout:fragment="content" id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Detail</h2>
+			<p th:text="${search.list[0].title}">detail</p>
+		</header>
+	
+		<section>
+			<th:block th:if="${search.list}">
+				<h3>Detail List</h3>
+				<h4>
+				pageableCount : <span th:text="${search.pageableCount}"></span><br/>
+				totalCount : <span th:text="${search.totalCount}"></span>
+				</h4>
+				<div class="table-wrapper">
+					<table>
+						<tbody th:with="list=${search.list[0]}">
+							<tr>
+								<th>제목</th>
+								<td th:text="${list.title}"></td>
+							</tr>
+							<tr>
+								<th>도서 썸네일</th>
+								<td>
+									<img th:src="@{${list.thumbnail}}" th:alt="${list.title}"/>
+								</td>
+							</tr>
+							<tr>
+								<th>소개</th>
+								<td th:text="${list.contents}"></td>
+							</tr>
+							<tr>
+								<th>ISBN</th>
+								<td th:text="${list.isbn}"></td>
+							</tr>
+							<tr>
+								<th>저자</th>
+								<td th:text="${list.authors}"></td>
+							</tr>
+							<tr>
+								<th>출판사</th>
+								<td th:text="${list.publisher}"></td>
+							</tr>
+							<tr>
+								<th>출판일</th>
+								<td th:text="${#dates.format(search_date, 'yyyy-MM-dd')}"></td>
+							</tr>
+							<tr>
+								<th>정가</th>
+								<td th:text="${#numbers.formatCurrency(list.price)}"></td>
+							</tr>
+							<tr>
+								<th>판매가</th>
+								<td th:text="${#numbers.formatCurrency(list.sale_price)}"></td>
+							</tr>													
+						</tbody>
+					</table>
+					<div class="col-3">
+						<ul class="actions">
+							<li>
+								<a th:href="@{'/search?searchType='+${#uris.escapePath(search.searchType)}+'&searchValue='+${#uris.escapePath(search.searchValue)}+'&page='+${search.page}}" class="button primary">List</a>
+							</li>
+						</ul>
+					</div>					
+				</div>
+			</th:block>
+		</section>
+	</div>
+</div>
+</html>

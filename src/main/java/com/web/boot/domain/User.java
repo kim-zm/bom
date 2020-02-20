@@ -43,6 +43,8 @@ public class User {
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+	
+	private String token;
 
 	public Long getId() {
 		return id;
@@ -86,5 +88,23 @@ public class User {
 	
 	public boolean getHasRole(String rolename) {
 		return this.roles.stream().filter(o -> o.getName().equals(rolename)).findAny().isPresent();
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", username='" + username  + '\'' +
+				", email='" + email  + '\'' +
+				", roles=" + roles +
+				'}';		
 	}
 }

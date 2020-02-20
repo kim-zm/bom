@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+	<title>Token</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+	function doToken(){
+		$.ajax({
+        	type : 'get',
+			url : '/index',
+			headers : {
+				Authorization : "Bearer "+token
+		    },
+        	success : function(data) {
+        		alert('success '+data);
+            },
+            error : function(error){
+            	alert('error');
+            }
+        });
+	}
+	doToken();
+	</script>
+</head>
+<div layout:fragment="content" id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Token</h2>
+			<p>token form</p>
+		</header>
+    
+	    <section>
+			<form th:action="@{/login}" th:object="${userForm}" method="post">
+				<div class="row gtr-uniform gtr-50">    
+			        <label for="lab-name">ID</label>
+					<div class="col-12 col-12-xsmall">
+						<input type="text" id="username" th:field="*{username}" />
+					</div>
+					<label for="lab-password">Token</label>
+					<div class="col-12 col-12-xsmall">
+						<input type="text" id="token" th:field="*{token}" value="" />
+					</div>	        
+		        	
+	        		<div class="col-12">
+						<ul class="actions">
+							<li><input type="button" value="Token" class="primary" onClick="doToken();"/></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</section>
+	</div>
+</div>
+</html>

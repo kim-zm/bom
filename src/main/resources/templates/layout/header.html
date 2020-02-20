@@ -6,8 +6,10 @@
 	<h1 id="logo"><a href="/">Boot</a></h1>
 	<nav id="nav">
 		<ul>
-			<li><a th:href="@{/}">Home</a></li>
-			<li sec:authorize="isAnonymous()"><a th:href="@{/registration}">Registration</a></li>
+			<li><a th:onclick="|javascript:moveNav('/index')|">Home</a></li>
+			<li><a th:onclick="|javascript:moveNav('/hello')|">Hello</a></li>
+			<li sec:authorize="isAnonymous()"><a th:onclick="|javascript:moveNav('/registration')|">Registration</a></li>
+			<li><a th:href="@{/search}">Search</a></li>
 			<li><a th:href="@{/elements.html}">Elements</a></li>
 			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}">Admin</a></li>
 			<li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/account}">Account</a></li>

@@ -9,21 +9,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsService userDetailsService;
-
+    private UserDetailsService userDetailsService;    
+	@Autowired
+	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
+	
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
     @Override
     public void configure(WebSecurity web) throws Exception
     {
@@ -32,25 +37,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-        	.authorizeRequests()
+    	http
+        	.csrf().disable()
+	        .authorizeRequests()
         		.antMatchers("/admin/**").hasRole("ADMIN")
         		.antMatchers("/user/**").hasRole("USER")
-        		.antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-            .and()
-            	.csrf()
-        		.ignoringAntMatchers("/console/**")
+        		//.antMatchers("/**").permitAll()
+        		.antMatchers("/authenticate").permitAll()
+        		.antMatchers("/registration").permitAll()
+        		.antMatchers("/login").permitAll()
+        		.antMatchers("/token").permitAll()
+                .anyRequest().authenticated()    
         	.and()
-        		.headers().frameOptions().disable()        		
+            	.headers().frameOptions().disable()
+   			.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedPage("/errorPage")
+			.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    		/*
         	.and()
             	.formLogin()
             	.loginPage("/login")
+            	.successForwardUrl("/loginSuccess")
                 .permitAll()
             .and()
             	.logout()
             	.logoutSuccessUrl("/login")
             	.invalidateHttpSession(true);
+            */
+    	
+    	http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

@@ -232,7 +232,7 @@ input, select, textarea {
 	}
 
 	.align-right {
-		text-align: right;
+		text-align: right !important;
 	}
 	
 	.error{
@@ -240,6 +240,11 @@ input, select, textarea {
 		font-size: 0.8em;
 		font-weight: 300;
 	}
+	
+	#container { float: left; width: 100%; margin: 0 auto; text-align: center; }
+	#container ul { display: table; margin: auto; padding:0; }
+	#container li { float: left; text-align: center; display:inline-block; }
+
 
 /* Loader */
 
@@ -2581,7 +2586,7 @@ input, select, textarea {
 		ol li {
 			padding-left: 0.25em;
 		}
-
+/*
 	ul {
 		list-style: disc;
 		margin: 0 0 2em 0;
@@ -2606,7 +2611,7 @@ input, select, textarea {
 					border-top: 0;
 					padding-top: 0;
 				}
-
+*/
 	dl {
 		margin: 0 0 2em 0;
 	}
@@ -2823,6 +2828,144 @@ input, select, textarea {
 			table.alt tfoot {
 				border-top: 0;
 			}
+
+/* Pagination */
+/*
+.nav-pagination{
+	text-align:center;
+}
+
+.pagination {
+  display: inline-block;
+  display: -moz-inline-stack;  
+}
+
+.pagination li {
+	display:inline;
+	vertical-align:middle;
+}
+
+.pagination a {
+  color: #fff;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 0px;
+}
+
+.pagination li a.active {
+  background-color: #eee;
+  color: #000;
+}
+
+.pagination li a:hover:not(.active) {
+	background-color: #ddd;
+}
+*/
+.list-unstyled {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+}
+.content-width {
+    position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media (min-width: 768px) {
+    .content-width {
+        padding-left: 71px;
+        padding-right: 71px;
+    }
+}
+
+#paging {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.pagination {position: relative;}
+.pagination li {display: none; overflow: hidden;}   
+.pagination li.selected, 
+.pagination li.lastpage {
+    display: inline-block;
+}
+.pagination .selected {
+    display: block;
+    color: #fff !important;
+    background-color: #e44c65;
+}
+.pagination .selected:after {
+    content:" /"; 
+    float: left;
+    margin-left: 15px;
+    margin-right: 5px;
+    line-height: 35px;
+    text-decoration: none;
+}
+.pagination .selected.lastpage:after {display: none;} 
+.pagination a,
+.pagination li span,
+.pagination .interword {
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+    float: left;
+    min-width: 31px;
+    padding-left:2px;
+    padding-right: 2px;
+    height: 35px;
+    line-height: 35px;
+    font-family: Helvetica;
+    color: #ddd;
+    transition: background-color .3s;
+    text-decoration: none;
+    border: solid 1px rgba(255, 255, 255, 0.3);
+}
+.pagination li a:hover {
+	background-color: #ddd;
+}
+.pagination li:first-child a,
+.pagination li:first-child span {
+    margin-left: 0;
+}
+.pagination li.prevpage,
+.pagination li.nextpage {
+    position: absolute;
+    top: 0;
+    display: block;
+}
+.pagination li.prevpage {left:0;}
+.pagination li.nextpage {right:0;}
+.pagination li.prevpage a,
+.pagination li.nextpage a {
+    width: auto;
+    font-family: inherit;
+}
+.pagination .no-more-prev,
+.pagination .no-more-next {
+    color: #eee !important;
+    cursor: not-allowed;
+}
+.pagination li a:hover {color: #81a9db}
+
+@media (min-width: 992px) {
+    .pagination li, 
+    .pagination li.prevpage,
+    .pagination li.nextpage {
+        display: inline-block;
+    }
+    .pagination li.prevpage,
+    .pagination li.nextpage {
+        position: static;        
+    }
+    .pagination li.prevpage {margin-right: 15px}
+    .pagination li.nextpage {margin-left: 15px;}
+    .pagination .selected:after {display: none;}
+}
+
 
 /* Button */
 

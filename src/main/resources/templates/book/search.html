@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+	<title>Search</title>
+	<script>
+		function movePage(page){
+			document.search.page.value = page;
+			document.search.submit();
+		}
+		
+		function moveDetail(title){
+			document.search.searchType.value = 'title';
+			document.search.searchValue.value = title;
+			document.search.submit();
+		}
+	</script>
+</head>
+<div layout:fragment="content" id="main" class="wrapper style1">
+	<div class="container">
+		<header class="major">
+			<h2>Search</h2>
+			<p>search form</p>
+		</header>
+	
+		<section>
+			<form th:action="@{/search}" th:object="${search}" method="post" name="search">
+				<input type="hidden" th:field="*{page}" value="" />
+				<div class="row gtr-uniform gtr-50">
+					<div class="col-3 col-12-xsmall">
+						<select th:field="*{searchType}">
+							<option value="title">title</option>
+							<option value="authors">authors</option>
+						</select>
+					</div>
+					<div class="col-6 col-12-xsmall">
+						<input type="text" th:field="*{searchValue}" value="" />
+					  	<p th:if="${#fields.hasErrors('searchValue')}" th:errors="*{searchValue}" class="error">search Error</p>
+					</div>
+					<div class="col-3">
+						<ul class="actions">
+							<li><input type="submit" value="Search" class="primary" /></li>						
+							<li><input type="reset" value="Reset" /></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+			<th:block th:if="${search.list}">
+				<h3>Search List</h3>
+				<h4>
+				pageableCount : <span th:text="${search.pageableCount}"></span><br/>
+				totalCount : <span th:text="${search.totalCount}"></span>
+				</h4>
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>title</th>
+								<th>authors</th>
+							</tr>						
+						</thead>
+						<tbody>
+							<th:block th:each="list, no : ${search.list}">
+								<tr>
+									<td>
+										<a th:href="@{'/search?searchType='+${#uris.escapePathSegment(search.searchType)}+'&searchValue='+${#uris.escapePathSegment(search.searchValue)}+'&page='+${search.page}+'&title='+${#uris.escapePathSegment(list.title)}}" th:text="${list.title}"></a>
+									</td>
+									<td>
+										<th:block th:each="authors : ${list.authors}">
+											<th:block th:text="${authors}" />
+										</th:block>
+									</td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+				<nav id="paging" class="content-width">
+				    <ul class="pagination list-unstyled" th:with="pageFirstNum=1,
+				    pageLastNum=${T(Math).floor(search.pageableCount/search.size)}+1,
+				    page=${search.page},
+				    size=${search.size},
+				    subtNum=${(page-5 > pageLastNum-size) ? pageLastNum-size : page-5},
+				    startNum=${(page-5 > pageFirstNum) ? subtNum : pageFirstNum},
+				    addNum=${(page+4 < size) ? size : page+4},				    
+				    endNum=${(page+4 < pageLastNum) ? addNum : pageLastNum}">
+				        <li class="prev">
+				            <a th:if="${page > pageFirstNum}" th:onclick="|javascript:movePage('${page-1}')|">&lt;&lt;</a>
+				            <span th:if="${page == pageFirstNum}">&lt;&lt;</span>
+				        </li>
+				        <li th:if="${startNum > pageFirstNum}">
+				        	<a th:onclick="|javascript:movePage('${pageFirstNum}')|" th:text="${pageFirstNum}"></a>
+				        </li>
+				        <li th:if="${startNum > pageFirstNum}" class="disabled">
+							<span>···</span>
+						</li>
+				        <li th:each="no:${#numbers.sequence(startNum, endNum)}" th:class="${no eq page} ? 'selected' : ''">
+				        	<a th:onclick="|javascript:movePage('${no}')|" th:text="${no}"></a>
+				        </li>
+				        <li th:if="${endNum < pageLastNum}" class="disabled">
+							<span>···</span>
+						</li>
+						<li th:if="${endNum < pageLastNum}">
+				        	<a th:onclick="|javascript:movePage('${pageLastNum}')|" th:text="${pageLastNum}"></a>
+				        </li>
+				        <li class="next">
+				        	<a th:if="${page < pageLastNum}" th:onclick="|javascript:movePage('${page+1}')|">&gt;&gt;</a>
+				            <span th:if="${page == pageLastNum}">&gt;&gt;</span>
+				        </li>
+				    </ul>
+				</nav>
+			</th:block>
+		</section>
+	</div>
+</div>
+</html>

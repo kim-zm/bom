@@ -1,7 +1,20 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "com.moowork.gradle:gradle-node-plugin:1.3.1"
+    }
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.2.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
+	id 'com.moowork.node' version '1.3.1'
 }
 
 group = 'com.web.boot'
@@ -29,6 +42,10 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16'
+	implementation 'com.google.code.gson:gson:2.8.5'
+	compile 'io.jsonwebtoken:jjwt:0.9.1'
+	compile 'org.springframework.security.oauth:spring-security-oauth2:2.3.3.RELEASE'
+	compile 'org.springframework.boot:spring-boot-devtools'
 	
 	runtimeOnly 'com.h2database:h2'
 	
@@ -40,3 +57,40 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+def webappDir = "$projectDir/frontend/react"
+
+// node 버전 및 npm, node 설치파일 저장 디렉토리 명시
+node {
+    version = '12.6.0'
+    download=true
+    workDir = file("${project.buildDir}/nodejs")
+    npmWorkDir=file("${project.buildDir}/npm")
+}
+
+// npm install 과정
+task appNpmInstall(type: NpmTask) {
+    workingDir = file("${project.projectDir}/frontend/react")
+    args = ["install"]
+    println("appNpmInstall")
+}
+
+// yarn build
+task yarnBuild(type: YarnTask) {
+    workingDir = file("${project.projectDir}/frontend/react")
+    args = ['build']
+    println("yarnBuild")
+}
+
+// 빌드된 결과 resources로 이동
+task copyWebApp(type: Copy) {
+    //from "frontend/react/build"
+    //into 'build/resources/main/static/.'
+    from "frontend/react/dist"
+    into 'bin/main/static/.'
+    println("copyWebApp")
+}
+
+//yarnBuild.dependsOn appNpmInstall
+//copyWebApp.dependsOn yarnBuild
+compileJava.dependsOn copyWebApp

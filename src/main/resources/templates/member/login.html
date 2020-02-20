@@ -4,6 +4,25 @@
       layout:decorate="~{layout/default}">
 <head>
 	<title>Login</title>
+	<script>
+	function doLogin(){
+		var formData = $("#userForm").serialize();
+		
+		$.ajax({
+        	type : 'post',
+			url : '/login',
+			data : formData,
+			success : function(data) {
+				moveNav('/hello');
+            },
+            error : function(error){
+            	alert('error');
+            }
+        });
+		return false;
+	}
+
+	</script>
 </head>
 <div layout:fragment="content" id="main" class="wrapper style1">
 	<div class="container">
@@ -13,7 +32,7 @@
 		</header>
     
 	    <section>
-			<form th:action="@{/login}" th:object="${userForm}" method="post">
+			<form th:action="@{/login}" th:object="${userForm}" id="userForm" method="post" onsubmit="return doLogin();">
 				<div class="row gtr-uniform gtr-50">    
 			        <label for="lab-name">ID</label>
 					<div class="col-12 col-12-xsmall">
