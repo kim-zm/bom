@@ -3,8 +3,8 @@ package com.web.boot.domain;
 import java.io.Serializable;
 
 public class JwtRequest implements Serializable {
-	private static final long serialVersionUID = 5926468583005150707L;
-
+	
+	private static final long serialVersionUID = 1483276487450003601L;
 	private String username;
 	private String password;
 

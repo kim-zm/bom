@@ -9,20 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,7 +33,6 @@ import com.web.boot.domain.Role;
 import com.web.boot.domain.Search;
 import com.web.boot.domain.User;
 import com.web.boot.service.BookService;
-import com.web.boot.service.RoleService;
 import com.web.boot.service.UserService;
 import com.web.boot.service.impl.UserDetailsServiceImpl;
 
@@ -50,19 +41,9 @@ public class WebController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private RoleService roleService;
-	@Autowired
 	private BookService bookService;
 	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
-	@Autowired
 	private UserValidator userValidator;
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
-	private AuthenticationManager authenticationManager;
 	
 	private String app_key = "";
 	
@@ -156,52 +137,6 @@ public class WebController {
         return "member/login";
     }
     
-    @PostMapping("/login")
-	public String createAuthenticationToken (HttpServletRequest request, HttpServletResponse response, @ModelAttribute("userForm") User userForm, RedirectAttributes redirectAttributes) throws Exception {
-		authenticate(userForm.getUsername(), userForm.getPassword());
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(userForm.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
-		
-		Cookie coo = new Cookie("token", token);		
-		response.addCookie(coo);
-				
-		return "member/login";
-	}
-    private void authenticate(String username, String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
-	}
-    
-    @GetMapping("/token")
-    public String token(HttpServletRequest request, @ModelAttribute("userForm") User userForm) {
-        System.out.println("token");
-        
-        return "member/token";
-    }
-    
-    @GetMapping("/loginSuccess")
-    public String loginSuccessGet(HttpServletRequest request, @ModelAttribute("userForm") User userForm, Model model, String error, String logout) {
-        System.out.println("durl~Get");
-        
-        return "member/login";
-    }
-    @PostMapping("/loginSuccess")
-    public String loginSuccessPost(HttpServletRequest request, @ModelAttribute("userForm") User userForm, Model model, String error, String logout) {
-        System.out.println("durl~Post");
-        
-        return "member/login";
-    }
-    /*
-    @GetMapping("/logout")
-    public String logout() {
-        return "/logout";
-    }
-    */
     @GetMapping("/search")
     public String search(Search search, Model model) 
     {
@@ -244,11 +179,6 @@ public class WebController {
         model.addAttribute("search", search);
     	model.addAttribute("search_date", to);
     	return "book/detail";
-    }
-    
-    @RequestMapping("/errorPage")
-    public String errorPage(){
-    	return "error";
     }
 }
 

@@ -50,24 +50,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()    
         	.and()
             	.headers().frameOptions().disable()
-   			.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				.accessDeniedPage("/errorPage")
-			.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    		/*
-        	.and()
+            	/*
+            .and()
             	.formLogin()
             	.loginPage("/login")
             	.successForwardUrl("/loginSuccess")
                 .permitAll()
+                
             .and()
             	.logout()
             	.logoutSuccessUrl("/login")
-            	.invalidateHttpSession(true);
-            */
+            	.invalidateHttpSession(true)
+            	*/
+   			.and()
+				.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);    		
     	
     	http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

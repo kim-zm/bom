@@ -20,9 +20,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+	
+	private static final long serialVersionUID = 6574615685166530462L;
 	@Value("${jwt.secret}")
     private String secret;
-	private static final long serialVersionUID = -2550185165626007488L;
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 	
 	// retrieve username from jwt token
