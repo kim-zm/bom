@@ -28,11 +28,13 @@
 	<div class="container">
 		<header class="major">
 			<h2>Login</h2>
-			<p>login form</p>
+			<p>로그인</p>
 		</header>
     
 	    <section>
-			<form th:action="@{/login}" th:object="${userForm}" id="userForm" method="post" onsubmit="return doLogin();">
+	    	<p th:if="${error}" th:text="${error}"></p>
+	    	<p th:if="${message}" th:text="${message}"></p>
+	    	<form th:action="@{/login}" th:object="${userForm}" method="post">
 				<div class="row gtr-uniform gtr-50">    
 			        <label for="lab-name">ID</label>
 					<div class="col-12 col-12-xsmall">
@@ -42,9 +44,6 @@
 					<div class="col-12 col-12-xsmall">
 						<input type="password" th:field="*{password}" value="" />
 					</div>	        
-		        	
-		        	<div th:if="${error}" th:text="${error}"></div>
-		        	<div th:if="${logout}" th:text="${message}"></div>
 	        	
 	        		<div class="col-12">
 						<ul class="actions">
@@ -53,8 +52,12 @@
 					</div>
 				</div>
 			</form>
-			<a href="/registration">registration</a>
-			<a href="/create">create(admin)</a>
+			<div class="row gtr-uniform gtr-50">
+				<div class="col-12 col-12-medium">
+					<p>회원가입 : <a href="/registration">registration</a></p>
+					<p>관 리 자 : <a href="/create">create</a></p>					
+				</div>
+			</div>
 		</section>
 	</div>
 </div>

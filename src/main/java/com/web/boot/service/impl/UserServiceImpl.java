@@ -29,8 +29,6 @@ public class UserServiceImpl implements UserService{
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-	private AuthenticationManager authenticationManager;
 	    
     @Override
 	public User findByUsername(String username) {
@@ -61,14 +59,13 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(user);
 	}
 	
-	public void authenticate(String username, String password) throws Exception {
-		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
+	@Override
+	public void updateUser(User user) {
+		User update = findByUsername(user.getUsername());
+		user.setId(update.getId());
+		user.setRoles(update.getRoles());
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));		
+		userRepository.save(user);
 	}
-
+	
 }

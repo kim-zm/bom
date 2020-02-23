@@ -44,8 +44,6 @@ public class User {
                inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 	
-	private String token;
-
 	public Long getId() {
 		return id;
 	}
@@ -90,14 +88,6 @@ public class User {
 		return this.roles.stream().filter(o -> o.getName().equals(rolename)).findAny().isPresent();
 	}
 	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	@Override
 	public String toString() {
 		return "User{" +

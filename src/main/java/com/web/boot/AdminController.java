@@ -47,10 +47,15 @@ public class AdminController {
     	return role;
 	}
 	
+    @GetMapping(value= {"", "/"})
+    public String index(Model model) {
+    	return "admin/index";
+    }
+    
     @GetMapping("/account")
     public String account(Model model) {
     	model.addAttribute("userForm", new User());
-    	return "member/account";
+    	return "admin/account";
     }
 
     @PostMapping("/account")
@@ -60,7 +65,7 @@ public class AdminController {
     	userValidator.validate(userForm, bindingResult);
     	
         if (bindingResult.hasErrors()) {
-            return "member/account";
+            return "admin/account";
         }
         
         userService.saveUser(userForm);

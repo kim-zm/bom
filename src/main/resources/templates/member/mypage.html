@@ -10,10 +10,11 @@
 	<div class="container">
 		<header class="major">
 			<h2>Mypage</h2>
-			<p>mypage form</p>
+			<p>마이페이지</p>
 		</header>
 	
 		<section>
+			<p th:if="${mypage}" th:text="${mypage}"></p>
 			<form th:action="@{/mypage}" th:object="${userForm}" method="post">
 				<div class="row gtr-uniform gtr-50">
 					<div class="col-6 col-12-xsmall">

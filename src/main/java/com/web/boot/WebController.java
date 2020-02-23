@@ -27,14 +27,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.web.boot.config.JwtTokenUtil;
 import com.web.boot.config.UserValidator;
 import com.web.boot.domain.Role;
 import com.web.boot.domain.Search;
 import com.web.boot.domain.User;
 import com.web.boot.service.BookService;
 import com.web.boot.service.UserService;
-import com.web.boot.service.impl.UserDetailsServiceImpl;
 
 @Controller
 public class WebController {
@@ -84,11 +82,10 @@ public class WebController {
     }
 
     @PostMapping("/registration")
-    public String registration(HttpServletRequest request, @ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, RedirectAttributes redirectAttributes)
+    public String registration(HttpServletRequest request, @ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult)
     {
     	userValidator.validate(userForm, bindingResult);
     	
-    	Map<String, String> error = new HashMap<String, String>();
     	if (bindingResult.hasErrors()) {
             return "member/registration";
         }
@@ -96,7 +93,6 @@ public class WebController {
         userForm.setRoles(Arrays.asList(new Role(2, "USER")));
         userService.saveUser(userForm);
 
-        redirectAttributes.addFlashAttribute("userForm", userForm);
         return "redirect:/login";
     }
     
@@ -109,18 +105,20 @@ public class WebController {
     }
 
     @PostMapping("/mypage")
-    public String mypage(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-    	
+    public String mypage(@ModelAttribute("userForm") @Valid User userForm, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    	/*
     	userValidator.validate(userForm, bindingResult);
     	
         if (bindingResult.hasErrors()) {
-            return "member/registration";
+        	model.addAttribute("mypage", "update_fail");
+            return "member/mypage";
         }
-        
-        userService.saveUser(userForm);
+        */
+        userService.updateUser(userForm);
 
         redirectAttributes.addFlashAttribute("userForm", userForm);
-        return "redirect:/login";
+        model.addAttribute("mypage", "update_success");
+        return "member/mypage";
     }    
 
     @GetMapping("/login")
