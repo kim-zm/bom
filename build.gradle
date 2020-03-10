@@ -7,7 +7,7 @@ buildscript {
 
     dependencies {
         classpath "com.moowork.gradle:gradle-node-plugin:1.3.1"
-        classpath "com.bmuschko:gradle-cargo-plugin:2.7.1"
+        //classpath "com.bmuschko:gradle-cargo-plugin:2.7.1"
     }
 }
 
@@ -17,7 +17,7 @@ plugins {
 	id 'java'
 	id 'com.moowork.node' version '1.3.1'
 }
-apply plugin: 'com.bmuschko.cargo'
+//apply plugin: 'com.bmuschko.cargo'
 
 
 group = 'com.web.boot'
@@ -50,6 +50,7 @@ dependencies {
 	compile 'org.springframework.security.oauth:spring-security-oauth2:2.3.3.RELEASE'
 	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	
 	runtimeOnly 'com.h2database:h2'
 	
@@ -57,34 +58,33 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 }
-
+/*
 cargo {
     containerId = 'tomcat6x'
     port = 9090
 
     deployable {
-        file = file('./build/libs/boot-application-0.0.1-SNAPSHOT.jar')
+        file = file("${project.buildDir}/libs/boot-application-0.0.1-SNAPSHOT.jar")
         context = 'bomboot'
     }
-/*
+
     remote {
         hostname = 'cloud.internal.it'
         username = 'superuser'
         password = 'secretpwd'
     }
-*/
+
     local {
-        homeDir = file('/home/web')
-        outputFile = file('build/output.log')
-        /*
+        homeDir = file("${project.projectDir}/frontend")
+        outputFile = file("build/output.log")
+        
         startStopTimeout = 60000
 		containerProperties {
             property 'cargo.tomcat.ajp.port', 9099
-        }
-        */
+        }        
     }
 }
-
+*/
 test {
 	//useJUnitPlatform()
 }
