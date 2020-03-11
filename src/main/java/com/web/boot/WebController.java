@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,9 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.web.boot.config.UserValidator;
+import com.web.boot.domain.Aticle;
 import com.web.boot.domain.Role;
 import com.web.boot.domain.Search;
 import com.web.boot.domain.User;
+import com.web.boot.service.ArticleService;
 import com.web.boot.service.BookService;
 import com.web.boot.service.UserService;
 
@@ -42,6 +45,10 @@ public class WebController {
 	private BookService bookService;
 	@Autowired
 	private UserValidator userValidator;
+	@Autowired
+	private ArticleService articleService;
+	@Autowired
+	private ElasticsearchTemplate es;
 	
 	private String app_key = "";
 	
@@ -178,5 +185,18 @@ public class WebController {
     	model.addAttribute("search_date", to);
     	return "book/detail";
     }
+    
+    @ResponseBody
+	@GetMapping("/elasticsearch")
+    public Aticle elasticsearch() 
+    {    	
+    	System.out.println("===Elastic st===");
+    	Aticle art = new Aticle(new Long(1), "eee");
+		Aticle test = articleService.save(art);
+		test = articleService.findByUsername("eee").get(0);
+		System.out.println("===Elastic ed===");
+		
+    	return test;
+    }    
 }
 
