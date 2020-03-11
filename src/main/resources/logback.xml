@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n
+			</Pattern>
+		</encoder>
+	</appender>
+	<appender name="LOGSTASH"
+		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+		<destination>${spring.elasticsearch.jest.proxy.host}:${spring.elasticsearch.jest.proxy.port}</destination>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder"></encoder>
+	</appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGSTASH"/>
+    </root>
+
+</configuration>
