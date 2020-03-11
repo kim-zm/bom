@@ -80,6 +80,7 @@ public class WebController {
 	
     @RequestMapping(value="/index", method=RequestMethod.GET)
     public String index(Model model) {
+        Log.log(Level.INFO, "======elasticsearch index======");
         return "index";
     }
     
