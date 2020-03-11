@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sun.istack.logging.Logger;
 import com.web.boot.config.UserValidator;
 import com.web.boot.domain.Aticle;
 import com.web.boot.domain.Role;
@@ -50,6 +52,7 @@ public class WebController {
 	@Autowired
 	private ElasticsearchTemplate es;
 	
+	private static final Logger Log = Logger.getLogger(WebController.class);
 	private String app_key = "";
 	
 	@ModelAttribute("codeRole")
@@ -190,6 +193,7 @@ public class WebController {
 	@GetMapping("/elasticsearch")
     public Aticle elasticsearch() 
     {    	
+    	Log.log(Level.INFO, "elasticsearch");
     	System.out.println("===Elastic st===");
     	Aticle art = new Aticle(new Long(1), "eee");
 		Aticle test = articleService.save(art);
