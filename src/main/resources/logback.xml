@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="LOG_FILE" value="./log/local" />
+	<property name="LOG_FILE" value="/log/local" />
 	<property name="LOGSTASH_HOST" value="127.0.0.1" />
 	<property name="LOGSTASH_PORT" value="5000" />
 	
