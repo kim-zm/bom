@@ -6,6 +6,7 @@ build/
 !**/src/test/**
 bin/
 frontend/react/node_modules/**
+application.log
 
 ### STS ###
 .apt_generated
