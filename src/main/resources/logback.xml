@@ -2,7 +2,7 @@
 <configuration>
 	<property name="LOG_FILE" value="./log/local" />
 	<property name="LOGSTASH_HOST" value="127.0.0.1" />
-	<property name="LOGSTASH_PORT" value="4560" />
+	<property name="LOGSTASH_PORT" value="9600" />
 	
 	<!-- ConsoleAppender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
