@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="LOG_FILE" value="/log/local" />
+	<property name="LOG_FILE" value="./log/local" />
 	<property name="LOGSTASH_HOST" value="127.0.0.1" />
 	<property name="LOGSTASH_PORT" value="5000" />
 	
@@ -28,11 +28,30 @@
 			</Pattern>
 		</encoder>
 	</appender>
-	<appender name="LOGSTASH"
-		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder"></encoder>
-	</appender>
+	
+	<!-- LogstashTcpSocketAppender -->
+	<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    	<destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <pattern>
+                    <pattern>{"serviceID":"myServiceName"}</pattern>
+                </pattern>
+                <timestamp />
+                <!--<version />-->
+                <context />
+                <threadName />
+                <logLevel />
+                <message />
+                <loggerName />
+                <logstashMarkers />
+                <stackTrace />
+                <callerData />
+            </providers>
+        </encoder>
+    </appender>
+
 
     <root level="INFO">
 		<appender-ref ref="CONSOLE"/>
