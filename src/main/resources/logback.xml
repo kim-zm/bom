@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<property name="LOG_FILE" value="./log/local" />
-	<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<property name="LOGSTASH_HOST" value="127.0.0.1" />
+	<property name="LOGSTASH_PORT" value="9200" />
+	
+	<!-- ConsoleAppender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n
+			</Pattern>
+		</encoder>
+    </appender>
+
+	<!-- RollingFileAppender -->
+	<appender name="DailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOG_FILE}/boot_log.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
@@ -17,12 +30,13 @@
 	</appender>
 	<appender name="LOGSTASH"
 		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-		<destination>127.0.0.1:9200</destination>
+		<destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
 		<encoder class="net.logstash.logback.encoder.LogstashEncoder"></encoder>
 	</appender>
 
     <root level="INFO">
-        <appender-ref ref="dailyRollingFileAppender"/>
+		<appender-ref ref="CONSOLE"/>
+        <appender-ref ref="DailyRollingFileAppender"/>
         <appender-ref ref="LOGSTASH"/>
     </root>
 
