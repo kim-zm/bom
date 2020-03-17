@@ -3,7 +3,7 @@
 	<property name="LOG_FILE" value="/log/local" />
     <property name="LOGSTASH_HOST" value="logstash" />
 	<property name="LOGSTASH_PORT" value="5000" />
-    <property name="APP_NAME" source="com.web.boot.name" value="boot" />
+    <property name="APP_NAME" source="com.web.boot.name" value="boot2" />
 	
 	<!-- ConsoleAppender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
