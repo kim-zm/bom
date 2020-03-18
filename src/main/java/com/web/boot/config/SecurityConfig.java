@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.authorizeRequests()
         		.antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/application/**").hasRole("ACTUATOR")
+                .requestMatchers(EndpointRequest.to("health", "flyway","info")).permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR")
         		.antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
         	.and()
@@ -68,14 +70,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    @Autowired
-    public void registerGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-            .withUser(userName)
-            .password(userPassword)
-            .roles("ACTUATOR");
     }
 }
