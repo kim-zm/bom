@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="LOG_FILE" value="/log/local" />
-    <property name="LOGSTASH_HOST" value="logstash" />
-	<property name="LOGSTASH_PORT" value="5000" />
-    <springProfile name="boot">
-		<property name="APP_NAME" source="com.web.boot.name" value="boot" />
-	</springProfile>
-	<springProfile name="boot2">
-		<property name="APP_NAME" source="com.web.boot.name" value="boot2" />
-	</springProfile>
-
 	<!-- ConsoleAppender -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -19,63 +9,8 @@
 		</encoder>
     </appender>
 
-	<springProfile name="!default">
-		<!-- RollingFileAppender -->
-		<appender name="DailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-			<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-				<fileNamePattern>${LOG_FILE}/boot_log.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
-				<maxHistory>30</maxHistory>
-				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-					<maxFileSize>100MB</maxFileSize>
-				</timeBasedFileNamingAndTriggeringPolicy>
-			</rollingPolicy>
-			<encoder>
-				<charset>UTF-8</charset>
-				<Pattern>%d %-4relative [%thread] %-5level %logger{35} - %msg%n
-				</Pattern>
-			</encoder>
-		</appender>
-	
-		<!-- LogstashTcpSocketAppender -->
-		<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-			<destination>${LOGSTASH_HOST}:${LOGSTASH_PORT}</destination>
-			<keepAliveDuration>5 minutes</keepAliveDuration>
-			<reconnectionDelay>15 second</reconnectionDelay>
-			<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-				<providers>
-					<mdc />
-					<pattern> 
-						<pattern> 
-							{ 
-								"service": "${APP_NAME:-}",
-								"traceId": "%X{X-B3-TraceId:-}"
-							} 
-						</pattern>
-					</pattern>
-					<timestamp>
-						<pattern>yyyy-MM-dd'T'HH:mm:ssZ</pattern>
-						<timeZone>UTC</timeZone> 
-					</timestamp>
-					<version />
-					<context />
-					<threadName />
-					<logLevel />
-					<message />
-					<loggerName />
-					<logstashMarkers />
-					<stackTrace />
-					<callerData />
-				</providers>
-			</encoder>
-		</appender>	
-	</springProfile>
-
     <root>
 		<appender-ref ref="CONSOLE"/>
-		<springProfile name="!default">
-			<appender-ref ref="DailyRollingFileAppender"/>
-			<appender-ref ref="LOGSTASH"/>
-		</springProfile>
     </root>
 
 </configuration>
