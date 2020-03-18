@@ -1,6 +1,7 @@
 package com.web.boot.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Value("${spring.security.user.name}")
+    private String userName;
+    @Value("${spring.security.user.password}")
+    private String userPassword;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -37,7 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.csrf().disable()
         	.authorizeRequests()
         		.antMatchers("/admin/**").hasRole("ADMIN")
-        		.antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/application/**").hasRole("ACTUATOR")
         		.antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
         	.and()
@@ -62,5 +68,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
+
+    @Autowired
+    public void registerGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .inMemoryAuthentication()
+            .withUser(userName)
+            .password(userPassword)
+            .roles("ACTUATOR");
     }
 }
