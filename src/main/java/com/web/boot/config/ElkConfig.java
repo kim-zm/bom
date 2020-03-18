@@ -19,9 +19,9 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 public class ElkConfig {
 	@Value("${spring.data.elasticsearch.cluster-name}")
 	private String EClusterName;
-	@Value("${spring.elasticsearch.jest.proxy.host}")
+	@Value("${elasticsearch.host}")
 	private String EHost;	
-	@Value("${spring.elasticsearch.jest.proxy.port}")
+	@Value("${elasticsearch.port}")
 	private int EPort;
 	
 	@Bean
